@@ -1,0 +1,406 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Portafolio de Acciones</title>
+    <style>
+      :root {
+        --bg-a: #f2f7ff;
+        --bg-b: #e8fff7;
+        --card: #ffffff;
+        --text: #0f172a;
+        --muted: #475569;
+        --primary: #0f766e;
+        --primary-hover: #0d635c;
+        --secondary: #1d4ed8;
+        --danger: #b91c1c;
+        --border: #dbe3ef;
+        --shadow: 0 14px 30px rgba(15, 23, 42, 0.1);
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        min-height: 100vh;
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        color: var(--text);
+        background:
+          radial-gradient(circle at 15% 20%, rgba(59, 130, 246, 0.14), transparent 40%),
+          radial-gradient(circle at 85% 0%, rgba(16, 185, 129, 0.14), transparent 35%),
+          linear-gradient(130deg, var(--bg-a), var(--bg-b));
+        padding: 24px 14px;
+      }
+
+      .container {
+        max-width: 980px;
+        margin: 0 auto;
+      }
+
+      .title {
+        text-align: center;
+        margin-bottom: 20px;
+      }
+
+      .title h1 {
+        margin: 0;
+        font-size: clamp(1.5rem, 3vw, 2.2rem);
+      }
+
+      .title p {
+        margin: 8px 0 0;
+        color: var(--muted);
+      }
+
+      .card {
+        background: var(--card);
+        border-radius: 16px;
+        border: 1px solid var(--border);
+        box-shadow: var(--shadow);
+        padding: 18px;
+      }
+
+      .form-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+        gap: 12px;
+      }
+
+      label {
+        display: block;
+        font-size: 0.9rem;
+        color: var(--muted);
+        margin-bottom: 6px;
+      }
+
+      input {
+        width: 100%;
+        border: 1px solid var(--border);
+        border-radius: 10px;
+        padding: 10px 12px;
+        font-size: 0.98rem;
+        outline: none;
+        transition: border-color 0.2s ease, box-shadow 0.2s ease;
+      }
+
+      input:focus {
+        border-color: var(--secondary);
+        box-shadow: 0 0 0 3px rgba(29, 78, 216, 0.12);
+      }
+
+      .buttons {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin-top: 16px;
+      }
+
+      button {
+        border: none;
+        border-radius: 10px;
+        padding: 10px 14px;
+        color: #ffffff;
+        font-size: 0.95rem;
+        cursor: pointer;
+        transition: transform 0.12s ease, filter 0.2s ease;
+      }
+
+      button:hover {
+        filter: brightness(1.02);
+      }
+
+      button:active {
+        transform: translateY(1px);
+      }
+
+      button:disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
+      }
+
+      .btn-primary {
+        background: var(--primary);
+      }
+
+      .btn-secondary {
+        background: var(--secondary);
+      }
+
+      .btn-danger {
+        background: var(--danger);
+      }
+
+      .status {
+        margin: 12px 0 2px;
+        min-height: 24px;
+        font-size: 0.95rem;
+      }
+
+      .status.loading {
+        color: var(--secondary);
+      }
+
+      .status.error {
+        color: var(--danger);
+      }
+
+      .status.success {
+        color: #0f766e;
+      }
+
+      .result-grid {
+        margin-top: 14px;
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 12px;
+      }
+
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        overflow: hidden;
+        border-radius: 10px;
+      }
+
+      th,
+      td {
+        padding: 10px;
+        text-align: left;
+        border-bottom: 1px solid var(--border);
+      }
+
+      thead th {
+        background: #f8fafc;
+        color: #334155;
+      }
+
+      pre {
+        margin: 0;
+        background: #0b1220;
+        color: #e2e8f0;
+        border-radius: 10px;
+        padding: 12px;
+        overflow: auto;
+        font-size: 0.88rem;
+      }
+
+      .muted {
+        color: var(--muted);
+        font-style: italic;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="title">
+        <h1>Gestor de Portafolio de Acciones</h1>
+        <p>Interfaz simple para registrar holdings y calcular el valor total</p>
+      </div>
+
+      <section class="card">
+        <div class="form-grid">
+          <div>
+            <label for="userId">userId</label>
+            <input id="userId" type="text" placeholder="ej: alice_01" />
+          </div>
+          <div>
+            <label for="symbol">Símbolo</label>
+            <input id="symbol" type="text" placeholder="ej: AAPL" />
+          </div>
+          <div>
+            <label for="shares">Acciones (shares)</label>
+            <input id="shares" type="number" step="any" placeholder="ej: 10" />
+          </div>
+          <div>
+            <label for="price">Precio (USD)</label>
+            <input id="price" type="number" step="any" placeholder="ej: 123.45" />
+          </div>
+        </div>
+
+        <div class="buttons">
+          <button id="btnAdd" class="btn-primary">Agregar acción</button>
+          <button id="btnView" class="btn-secondary">Ver portafolio</button>
+          <button id="btnValue" class="btn-secondary">Calcular valor total</button>
+          <button id="btnClear" class="btn-danger">Limpiar pantalla</button>
+        </div>
+
+        <div id="status" class="status muted">Listo para operar.</div>
+
+        <div class="result-grid">
+          <div id="tableContainer"></div>
+          <pre id="output">{}</pre>
+        </div>
+      </section>
+    </div>
+
+    <script>
+      const userIdInput = document.getElementById("userId");
+      const symbolInput = document.getElementById("symbol");
+      const sharesInput = document.getElementById("shares");
+      const priceInput = document.getElementById("price");
+      const output = document.getElementById("output");
+      const statusEl = document.getElementById("status");
+      const tableContainer = document.getElementById("tableContainer");
+
+      const btnAdd = document.getElementById("btnAdd");
+      const btnView = document.getElementById("btnView");
+      const btnValue = document.getElementById("btnValue");
+      const btnClear = document.getElementById("btnClear");
+      const allButtons = [btnAdd, btnView, btnValue, btnClear];
+
+      function setLoading(isLoading, message = "Procesando...") {
+        allButtons.forEach((btn) => {
+          btn.disabled = isLoading;
+        });
+
+        if (isLoading) {
+          statusEl.className = "status loading";
+          statusEl.textContent = message;
+        }
+      }
+
+      function setStatus(type, message) {
+        statusEl.className = `status ${type}`;
+        statusEl.textContent = message;
+      }
+
+      function getUserId() {
+        return userIdInput.value.trim();
+      }
+
+      function ensureUserId() {
+        const userId = getUserId();
+        if (!userId) {
+          throw new Error("Debes ingresar un userId.");
+        }
+        return userId;
+      }
+
+      function printResult(data) {
+        output.textContent = JSON.stringify(data, null, 2);
+      }
+
+      function renderHoldingsTable(holdings = []) {
+        if (!Array.isArray(holdings) || holdings.length === 0) {
+          tableContainer.innerHTML = '<div class="muted">Sin holdings para mostrar.</div>';
+          return;
+        }
+
+        const rows = holdings
+          .map((h) => {
+            const partial = Number(h.shares) * Number(h.price);
+            return `
+              <tr>
+                <td>${h.symbol}</td>
+                <td>${h.shares}</td>
+                <td>$${Number(h.price).toFixed(2)}</td>
+                <td>$${partial.toFixed(2)}</td>
+              </tr>
+            `;
+          })
+          .join("");
+
+        tableContainer.innerHTML = `
+          <table>
+            <thead>
+              <tr>
+                <th>Symbol</th>
+                <th>Shares</th>
+                <th>Price</th>
+                <th>Subtotal</th>
+              </tr>
+            </thead>
+            <tbody>${rows}</tbody>
+          </table>
+        `;
+      }
+
+      async function requestJSON(url, options = {}) {
+        const response = await fetch(url, options);
+        const text = await response.text();
+        let body;
+
+        try {
+          body = text ? JSON.parse(text) : {};
+        } catch (err) {
+          body = { raw: text };
+        }
+
+        if (!response.ok) {
+          const message = body && body.error ? body.error : "Error en la solicitud";
+          const details = body && body.details ? ` | ${JSON.stringify(body.details)}` : "";
+          throw new Error(`${message}${details}`);
+        }
+
+        return body;
+      }
+
+      btnAdd.addEventListener("click", async () => {
+        try {
+          const userId = ensureUserId();
+          const payload = {
+            symbol: symbolInput.value,
+            shares: Number(sharesInput.value),
+            price: Number(priceInput.value)
+          };
+
+          setLoading(true, "Agregando acción...");
+          const data = await requestJSON(`/api/users/${encodeURIComponent(userId)}/portfolio`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(payload)
+          });
+
+          printResult(data);
+          renderHoldingsTable(data.holdings || []);
+          setStatus("success", "Acción agregada correctamente.");
+        } catch (error) {
+          setStatus("error", error.message);
+        } finally {
+          setLoading(false);
+        }
+      });
+
+      btnView.addEventListener("click", async () => {
+        try {
+          const userId = ensureUserId();
+          setLoading(true, "Consultando portafolio...");
+          const data = await requestJSON(`/api/users/${encodeURIComponent(userId)}/portfolio`);
+
+          printResult(data);
+          renderHoldingsTable(data.holdings || []);
+          setStatus("success", "Portafolio cargado.");
+        } catch (error) {
+          setStatus("error", error.message);
+        } finally {
+          setLoading(false);
+        }
+      });
+
+      btnValue.addEventListener("click", async () => {
+        try {
+          const userId = ensureUserId();
+          setLoading(true, "Calculando valor total...");
+          const data = await requestJSON(`/api/users/${encodeURIComponent(userId)}/portfolio/value`);
+
+          printResult(data);
+          renderHoldingsTable(data.holdings || []);
+          setStatus("success", `Valor total: $${Number(data.totalValue).toFixed(2)} ${data.currency}`);
+        } catch (error) {
+          setStatus("error", error.message);
+        } finally {
+          setLoading(false);
+        }
+      });
+
+      btnClear.addEventListener("click", () => {
+        output.textContent = "{}";
+        tableContainer.innerHTML = "";
+        setStatus("success", "Pantalla limpiada.");
+      });
+    </script>
+  </body>
+</html>

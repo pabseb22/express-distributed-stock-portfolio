@@ -1,0 +1,17 @@
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: stock-portfolio-app
+    environment:
+      NODE_ENV: production
+      PORT: 3000
+    ports:
+      - "3000:3000"
+    volumes:
+      - portfolio_data:/app/data
+    restart: unless-stopped
+
+volumes:
+  portfolio_data:

@@ -1,0 +1,21 @@
+{
+  "name": "express-distributed-stock-portfolio",
+  "version": "1.0.0",
+  "description": "Small stock portfolio assignment using Node.js, Express, static HTML, and file-based persistence.",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js"
+  },
+  "keywords": [
+    "express",
+    "portfolio",
+    "nodejs",
+    "docker"
+  ],
+  "author": "student",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.21.2"
+  }
+}
