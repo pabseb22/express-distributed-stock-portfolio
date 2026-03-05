@@ -20,7 +20,6 @@ Universidad San Francisco de Quito
 ### Opción 1: Desde Docker Hub
 
 ```bash
-docker pull byandyx/express-distributed-stock-portfolio:latest
 docker run -p 3000:3000 byandyx/express-distributed-stock-portfolio:latest
 ```
 
@@ -44,7 +43,7 @@ docker compose down
 
 ## Uso de la Aplicación
 
-1. Ingresar un nombre de usuario en el campo "userId" (ej: juan).
+1. Ingresar un nombre de usuario en el campo "userId" (ej: juan_01).
 2. Completar el formulario con:
    - Símbolo de la acción (ej: AAPL)
    - Número de acciones (ej: 10)
@@ -57,7 +56,6 @@ docker compose down
 
 ```text
 .
-├── data/                  # Archivos JSON por usuario (persistencia)
 ├── public/
 │   └── index.html         # UI estática (HTML/CSS/JS)
 ├── server.js              # API REST + static server
@@ -70,7 +68,7 @@ docker compose down
 
 ## Formato de datos
 
-Cada usuario se guarda en `./data/<userId>.json`:
+Cada usuario se guarda en el volume de la imagen de docker`./data/<userId>.json`:
 
 ```json
 {
